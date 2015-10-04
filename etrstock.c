@@ -158,5 +158,5 @@ double look_up_stock_price(char search_name[MAX_STOCK_NAME_LENGTH],struct Node_s
     head = head->next;
   }
  
-  return -1e30;
+  return -1e3;
 }

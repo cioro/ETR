@@ -2,21 +2,22 @@
 // an electric trading reporting program (ETR). 
 //ETR allows users to trade stocks from their own computers without human 
 //intervention.
-#include<stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "etrstock.h"
+#include "etrtrade.h"
 
-#define MAX_USER_NAME_LENGTH 20
+#define MAX_BUYS_RECORDED 100
+#define MAX_SELLS_RECORDED 100
+
 #define MAX_TRADE_REQUEST_LENGTH 100
-
-struct trade_request{
+struct executed_trade{
   char user_name[MAX_USER_NAME_LENGTH];
-  char request;
   char stock_name[MAX_STOCK_NAME_LENGTH];
   int num_shares;
-  double user_price;
+  double traded_price;
 };
-
 
 int main(void){
 
@@ -39,67 +40,34 @@ int main(void){
 //Read each trade and process the trade
   FILE * ftrades;
   ftrades = fopen("trades.tex","r");
+  struct executed_trade BUYS[MAX_BUYS_RECORDED];
+  int Nbuys = 0;
+  struct executed_trade SELLS[MAX_SELLS_RECORDED]; 
+  int Nsells = 0;
+  
 
-  //-------------------------------------------------------------
+//-------------------------------------------------------------
   //Load data into trade_request struct 
 
  char str[MAX_TRADE_REQUEST_LENGTH];//Maybe use another define?
- while(  fscanf(ftrades,"%s", str) != EOF){
- 
- 
-  struct trade_request t;
-
-  
-  //Load USER_NAME
-  int i;
-  for (i = 0; str[i] != '|'; i++){
-    t.user_name[i]=str[i];
-  }
-  t.user_name[i]='\0';
-  
-  i++;// '|'
-  //Load REQUEST_TYPE 
-  t.request = str[i];
-  i++;// request char
-  
-  //Load STOCK_NAME
-  i++;//'|'
-  int j;
-  for (j = 0; str[i] != '|';j++, i++){
-    t.stock_name[j]=str[i];
-  }
-  t.stock_name[j]='\0';
-  
-  //Load NUM_SHARES
-  char tmp[20];
-  i++;
-  for (j = 0 ; str[i] != '|' ;j++, i++){
-    tmp[j]=str[i];
-   }
-  tmp[j] = '\0';
-  t.num_shares = atoi(tmp);
-  
-  //Load USER_PRICE
-  char tmp2[20];
-  i++;
-  for (j = 0 ; str[i] != 0 ;j++, i++){
-    tmp2[j]=str[i];
-   }
-  tmp2[j] = '\0';
-  
-  t.user_price = atof(tmp2);
-  //--------------------------------------------------
+while(  fscanf(ftrades,"%s", str) != EOF){
+  struct trade_request t = load_request(str);
 
   double stock_price;
   stock_price = look_up_stock_price(t.stock_name,head_stock_list);
-
+  
   double traded_price;
   if(stock_price > 0 ){
     if(t.request == 'B'){
       if(t.user_price >= stock_price){
 	traded_price = (t.user_price+stock_price)/2;
-	//record transaction
-	printf("BUY EXECUTED. Traded price: %f \n",traded_price);
+	//record transactio
+        strcpy(BUYS[Nbuys].user_name, t.user_name);
+        strcpy(BUYS[Nbuys].stock_name, t.stock_name);
+        BUYS[Nbuys].num_shares = t.num_shares;
+        BUYS[Nbuys].traded_price = traded_price; 
+        Nbuys++;
+        printf("BUY EXECUTED. Traded price: %f \n",traded_price);
       }else{
 	//error transaction not processed. User buying price below stock price
 	printf("NOT EXECUTED. user asking price %f below stock price \n", t.user_price);
@@ -108,6 +76,11 @@ int main(void){
       if(t.user_price <= stock_price){
 	traded_price = (t.user_price+stock_price)/2;
 	//record transaction
+        strcpy(SELLS[Nsells].user_name, t.user_name);
+        strcpy(SELLS[Nsells].stock_name, t.stock_name);
+        SELLS[Nsells].num_shares = t.num_shares;
+        SELLS[Nsells].traded_price = traded_price; 
+        Nsells++;
 	printf("SELL EXECUTED. Traded price: %f \n",traded_price);
       }else{
 	//error transaction not processed. Stockprice higher than user selling price.
@@ -121,9 +94,25 @@ int main(void){
   }else{
     printf("error: %s is not in the stock file \n", t.stock_name);
   }
-//Print report on executed trades
+
  }
+
+
+
+ //---------------------------------------------------------------------------------------
     fclose(ftrades);
+
+printf("\n");
+printf("Trade Type: BUY \n");
+printf("------------------------------------------ \n");
+printf("Stock: %s\n", BUYS[0].stock_name);
+
+printf("\n");
+printf("Trade Type: SELL\n");
+printf("------------------------------------------\n ");
+
+
     return 0;
+
 }
 
