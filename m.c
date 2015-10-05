@@ -7,7 +7,8 @@
 #include <string.h>
 #include "etrstock.h"
 #include "etrtrade.h"
-
+#include "etr_report.h"
+/*
 #define MAX_BUYS_RECORDED 100
 #define MAX_SELLS_RECORDED 100
 
@@ -17,7 +18,7 @@ struct executed_trade{
   char stock_name[MAX_STOCK_NAME_LENGTH];
   int num_shares;
   double traded_price;
-};
+  };*/
 
 int main(void){
 
@@ -40,11 +41,9 @@ int main(void){
 //Read each trade and process the trade
   FILE * ftrades;
   ftrades = fopen("trades.tex","r");
+
   struct executed_trade BUYS[MAX_BUYS_RECORDED];
-  int Nbuys = 0;
   struct executed_trade SELLS[MAX_SELLS_RECORDED]; 
-  int Nsells = 0;
-  
 
 //-------------------------------------------------------------
   //Load data into trade_request struct 
@@ -55,8 +54,11 @@ while(  fscanf(ftrades,"%s", str) != EOF){
 
   double stock_price;
   stock_price = look_up_stock_price(t.stock_name,head_stock_list);
-  
-  double traded_price;
+
+  //---------------------------------------------------------------------------  
+  void process_trade(BUYS,SELLS,t,stoc_price);
+    /*  
+double traded_price;
   if(stock_price > 0 ){
     if(t.request == 'B'){
       if(t.user_price >= stock_price){
@@ -94,7 +96,8 @@ while(  fscanf(ftrades,"%s", str) != EOF){
   }else{
     printf("error: %s is not in the stock file \n", t.stock_name);
   }
-
+*/
+  //-------------------------------------------------------------------------------------
  }
 
 
@@ -106,10 +109,12 @@ printf("\n");
 printf("Trade Type: BUY \n");
 printf("------------------------------------------ \n");
 printf("Stock: %s\n", BUYS[0].stock_name);
+printf("Stock: %s\n", BUYS[1].stock_name);
 
 printf("\n");
 printf("Trade Type: SELL\n");
-printf("------------------------------------------\n ");
+printf("------------------------------------------\n");
+printf("Stock: %s\n", SELLS[0].stock_name);
 
 
     return 0;
