@@ -51,7 +51,7 @@ struct trade_request load_request(char str[])
 }
 
 
-void process_trade(struct executed_trade BUYS[], struct executed_trade SELLS[], struct trade_request t,double stock_price){
+void process_trade(struct executed_trade BUYS[], struct executed_trade SELLS[], struct trade_request t,double stock_price,int* buys, int* sells){
 
   double traded_price;
   static int Nbuys = 0;
@@ -93,4 +93,7 @@ void process_trade(struct executed_trade BUYS[], struct executed_trade SELLS[], 
   }else{
     printf("error: %s is not in the stock file \n", t.stock_name);
   }
+
+  *buys = Nbuys;
+  *sells = Nsells;
 }

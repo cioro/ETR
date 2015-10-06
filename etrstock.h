@@ -1,10 +1,9 @@
 #ifndef ETR_STOCK_H
 #define ETR_STOCK_H
 
+#include "etr_definitions.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-#define MAX_STOCK_NAME_LENGTH 15
 
 struct stock{
   double stock_price;

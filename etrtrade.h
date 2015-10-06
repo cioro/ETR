@@ -1,8 +1,7 @@
 #ifndef ETR_TRADE_H
 #define ETR_TRADE_H
 
-#define MAX_USER_NAME_LENGTH 20
-
+#include "etr_definitions.h"
 #include "etrstock.h"
 #include "etr_report.h"
 
@@ -15,5 +14,5 @@ struct trade_request{
 };
 
 struct trade_request load_request(char str[]);
-void process_trade(struct executed_trade BUYS[MAX_BUYS_RECORDED], struct executed_trade SELLS[MAX_SELLS_RECORDED], struct trade_request t,double stock_price);
+void process_trade(struct executed_trade BUYS[], struct executed_trade SELLS[], struct trade_request t,double stock_price, int * buys, int * sells);
 #endif
