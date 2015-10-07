@@ -11,46 +11,17 @@ void merge(struct executed_trade arr[], int l, int m, int r);
 
 bool alphcmp (struct executed_trade L, struct executed_trade R)
 {
-  if(L.stock_name[0] < R.stock_name[0]){
-    return true;
-  }else if(L.stock_name[0] == R.stock_name[0]){
-     
-    int i = 0;
-    while(L.stock_name[i]==R.stock_name[i]){
+  if(L.stock_name[0] <= R.stock_name[0]){
+    int i=0;
+    while(L.stock_name[i] == R.stock_name[i]){
       i++;
     }
-    if(L.stock_name[i] <= R.stock_name[i]){
-	printf("similar stock \n");
-	return true;
+    if(L.stock_name[i] < R.stock_name[i]){
+      return true;
     }else{
       return false;
     }
-    
-    /*
-    if(strcmp(L.stock_name,R.stock_name)){
-      int j = 0;
-      while(L.user_name[j]==R.user_name[j] && L.user_name[j] != 0 && R.user_name[j] != 0){
-	j++;
-      }
-      if(L.user_name[j] < R.user_name[j]){
-	return true;
-      }else {
-	return false;
-      }
-    }else{
-      int i = 0;
-      while(L.stock_name[i]==R.stock_name[i]){
-	i++;
-      }
-      if(L.stock_name[i] < R.stock_name[i]){
-	printf("similar stock \n");
-	return true;
-      }else{
-	  return false;
-      }
-    }
-    */     
-  }else{
+ }else{
     return false;
   }
 
@@ -77,7 +48,7 @@ void merge(struct executed_trade arr[], int l, int m, int r)
     k = l;
     while (i < n1 && j < n2)
     {
-      if (alphcmp(L[i],R[i]))
+      if (alphcmp(L[i],R[j]))
         {
             arr[k] = L[i];
             i++;
