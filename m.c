@@ -18,12 +18,6 @@ int main(void){
 
   head_stock_list = createStockList(fstocks,head_stock_list);
   head_stock_list = listSort(head_stock_list);
-  
-  struct Node_stock * list_ptr = head_stock_list;
-  while(list_ptr != NULL){
-   printf("%s \t %f \n",list_ptr->data.stock_name, list_ptr->data.stock_price);
-   list_ptr = list_ptr->next;
-  }
 
   fclose(fstocks);
   
@@ -34,13 +28,10 @@ int main(void){
   struct executed_trade BUYS[MAX_BUYS_RECORDED];
   struct executed_trade SELLS[MAX_SELLS_RECORDED]; 
   int NBuys,NSells;
-//-------------------------------------------------------------
-  //Load data into trade_request struct 
 
  char str[MAX_TRADE_REQUEST_LENGTH];//Maybe use another define?
 while(  fscanf(ftrades,"%s", str) != EOF){
   struct trade_request t = load_request(str);
-
   double stock_price;
   stock_price = look_up_stock_price(t.stock_name,head_stock_list);
   process_trade(BUYS,SELLS,t,stock_price, &NBuys, &NSells);
@@ -48,14 +39,13 @@ while(  fscanf(ftrades,"%s", str) != EOF){
 
  fclose(ftrades);
 
+ //Print report to file
  FILE * freport;
  freport = fopen ("report.tex", "w");
 
  printReport(freport,BUYS,SELLS,NBuys,NSells);
 
  fclose(freport); 
- 
  return 0;
-
 }
 
