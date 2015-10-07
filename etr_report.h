@@ -11,6 +11,5 @@ struct executed_trade{
   double traded_price;
 };
 
-void mergeSort(struct executed_trade arr[], int l, int r);
-
+ void printReport(FILE * freport, struct executed_trade BUYS[], struct executed_trade SELLS[],int NBuys,int NSells);
 #endif

@@ -7,16 +7,80 @@
 //-------------------------------------------------------
 bool alphcmp (struct executed_trade L, struct executed_trade R);
 void merge(struct executed_trade arr[], int l, int m, int r);
+void mergeSort(struct executed_trade arr[], int l, int r);
 //-------------------------------------------------------
+
+
+void printReport(FILE * freport, struct executed_trade BUYS[], struct executed_trade SELLS[],int NBuys,int NSells)
+{
+  mergeSort(BUYS,0, NBuys-1);
+   
+  fprintf(freport,"\n");
+  fprintf(freport,"Trade Type: BUY \n");
+  fprintf(freport,"------------------------------------------ \n");
+  for(int i = 0; i < NBuys; ++i){
+   
+   
+    if(i!=0 && strcmp(BUYS[i-1].stock_name,BUYS[i].stock_name)){
+      fprintf(freport,"\n");
+      fprintf(freport,"Stock: %s \n", BUYS[i].stock_name);
+      char name[]="User";
+      char price[]="Price";
+      char shares[]="Shares";
+      fprintf(freport,"%-8s \t %-8s \t %-8s \n",name,price,shares);
+    }else if(i == 0){
+      fprintf(freport,"Stock: %s \n", BUYS[i].stock_name);
+      char name[]="User";
+      char price[]="Price";
+      char shares[]="Shares";
+      fprintf(freport,"%-8s \t %-8s \t %-8s \n",name,price,shares);
+    }
+    fprintf(freport,"%-8s \t %-.2f \t %-2i\n",BUYS[i].user_name,BUYS[i].traded_price,BUYS[i].num_shares);
+  }
+ 
+  mergeSort(SELLS,0, NSells-1);
+  fprintf(freport,"\n");
+  fprintf(freport,"Trade Type: SELL \n");
+  fprintf(freport,"------------------------------------------ \n");
+  for(int i = 0; i < NSells; ++i){
+   
+   
+    if(i!=0 && strcmp(SELLS[i-1].stock_name,SELLS[i].stock_name)){
+      fprintf(freport,"\n");
+      fprintf(freport,"Stock: %s \n", SELLS[i].stock_name);
+      char name[]="User";
+      char price[]="Price";
+      char shares[]="Shares";
+      fprintf(freport,"%-8s \t %-8s \t %-8s \n",name,price,shares);
+    }else if(i == 0){
+      fprintf(freport,"Stock: %s \n", SELLS[i].stock_name);
+      char name[]="User";
+      char price[]="Price";
+      char shares[]="Shares";
+      fprintf(freport,"%-8s \t %-8s \t %-8s \n",name,price,shares);
+    }
+    fprintf(freport,"%-8s \t %-.2f \t %-2i\n",SELLS[i].user_name,SELLS[i].traded_price,SELLS[i].num_shares);
+  }
+}
 
 bool alphcmp (struct executed_trade L, struct executed_trade R)
 {
   if(L.stock_name[0] <= R.stock_name[0]){
     int i=0;
-    while(L.stock_name[i] == R.stock_name[i]){
+    while(L.stock_name[i] == R.stock_name[i] && L.stock_name[i] != '\0' && R.stock_name[i] !='\0'){
       i++;
     }
-    if(L.stock_name[i] < R.stock_name[i]){
+    if(L.stock_name[i]== '\0' && R.stock_name[i]=='\0'){
+      int j=0;
+      while(L.user_name[j] == R.user_name[j] && L.user_name[j] != '\0' && R.user_name[j] !='\0'){
+	j++;
+      }
+      if(L.user_name[j] <= R.user_name[j]){
+	return true;
+      }else{
+	return false;
+      }
+    }else if(L.stock_name[i] < R.stock_name[i]){
       return true;
     }else{
       return false;
