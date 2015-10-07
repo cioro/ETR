@@ -2,6 +2,7 @@
 // an electric trading reporting program (ETR). 
 //ETR allows users to trade stocks from their own computers without human 
 //intervention.
+//First draft
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
