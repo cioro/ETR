@@ -3,6 +3,7 @@
 //ETR allows users to trade stocks from their own computers without human 
 //intervention.
 //First draft
+//Compare this
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
