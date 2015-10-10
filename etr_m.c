@@ -44,7 +44,7 @@ while(  fscanf(ftrades,"%s", str) != EOF){
  FILE * freport;
  freport = fopen ("report.tex", "w");
 
- printReport(freport,BUYS,SELLS,NBuys,NSells);
+ printReport(freport,BUYS,NBuys,SELLS,NSells);
 
  fclose(freport); 
  return 0;

@@ -17,5 +17,5 @@ struct Node_stock{
 
 struct Node_stock * createStockList(FILE * file, struct Node_stock * head );
 struct Node_stock *listSort(struct Node_stock *list);
-double look_up_stock_price(char search_name[MAX_STOCK_NAME_LENGTH],struct Node_stock* head); 
+double look_up_stock_price(char* search_name,struct Node_stock* head); 
 #endif

@@ -11,5 +11,9 @@ struct executed_trade{
   double traded_price;
 };
 
- void printReport(FILE * freport, struct executed_trade BUYS[], struct executed_trade SELLS[],int NBuys,int NSells);
+void printReport(FILE * freport, 
+		 struct executed_trade * buyTrades,
+		 size_t buySize,
+		 struct executed_trade * sellTrades,
+		 size_t sellSize);
 #endif

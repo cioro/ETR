@@ -5,82 +5,86 @@
 
 //Internal function declarations
 //-------------------------------------------------------
-bool alphcmp (struct executed_trade L, struct executed_trade R);
+bool alphcmp (const struct executed_trade* L, const struct executed_trade* R);
 void merge(struct executed_trade arr[], int l, int m, int r);
 void mergeSort(struct executed_trade arr[], int l, int r);
 //-------------------------------------------------------
 
 
-void printReport(FILE * freport, struct executed_trade BUYS[], struct executed_trade SELLS[],int NBuys,int NSells)
+void printReport(FILE * freport,
+		 struct executed_trade * buyTrades,
+		 size_t buySize,
+		 struct executed_trade * sellTrades,
+		 size_t sellSize)
 {
-  mergeSort(BUYS,0, NBuys-1);
+  mergeSort(buyTrades,0, buySize-1);
    
   fprintf(freport,"\n");
   fprintf(freport,"Trade Type: BUY \n");
   fprintf(freport,"------------------------------------------ \n");
-  for(int i = 0; i < NBuys; ++i){
+  for(size_t i = 0; i < buySize; ++i){
    
    
-    if(i!=0 && strcmp(BUYS[i-1].stock_name,BUYS[i].stock_name)){
+    if(i !=0 && strcmp(buyTrades[i-1].stock_name, buyTrades[i].stock_name)){
       fprintf(freport,"\n");
-      fprintf(freport,"Stock: %s \n", BUYS[i].stock_name);
+      fprintf(freport,"Stock: %s \n", buyTrades[i].stock_name);
       char name[]="User";
       char price[]="Price";
       char shares[]="Shares";
       fprintf(freport,"%-8s \t %-8s \t %-8s \n",name,price,shares);
     }else if(i == 0){
-      fprintf(freport,"Stock: %s \n", BUYS[i].stock_name);
+      fprintf(freport,"Stock: %s \n", buyTrades[i].stock_name);
       char name[]="User";
       char price[]="Price";
       char shares[]="Shares";
       fprintf(freport,"%-8s \t %-8s \t %-8s \n",name,price,shares);
     }
-    fprintf(freport,"%-8s \t %-.2f \t %-2i\n",BUYS[i].user_name,BUYS[i].traded_price,BUYS[i].num_shares);
+    fprintf(freport,"%-8s \t %-.2f \t %-2i\n",buyTrades[i].user_name,buyTrades[i].traded_price,buyTrades[i].num_shares);
   }
  
-  mergeSort(SELLS,0, NSells-1);
+  mergeSort(sellTrades,0, sellSize-1);
   fprintf(freport,"\n");
   fprintf(freport,"Trade Type: SELL \n");
   fprintf(freport,"------------------------------------------ \n");
-  for(int i = 0; i < NSells; ++i){
+  for(size_t i = 0; i < sellSize; ++i){
    
    
-    if(i!=0 && strcmp(SELLS[i-1].stock_name,SELLS[i].stock_name)){
+    if(i!=0 && strcmp(sellTrades[i-1].stock_name,sellTrades[i].stock_name)){
       fprintf(freport,"\n");
-      fprintf(freport,"Stock: %s \n", SELLS[i].stock_name);
+      fprintf(freport,"Stock: %s \n", sellTrades[i].stock_name);
       char name[]="User";
       char price[]="Price";
       char shares[]="Shares";
       fprintf(freport,"%-8s \t %-8s \t %-8s \n",name,price,shares);
     }else if(i == 0){
-      fprintf(freport,"Stock: %s \n", SELLS[i].stock_name);
+      fprintf(freport,"Stock: %s \n", sellTrades[i].stock_name);
       char name[]="User";
       char price[]="Price";
       char shares[]="Shares";
       fprintf(freport,"%-8s \t %-8s \t %-8s \n",name,price,shares);
     }
-    fprintf(freport,"%-8s \t %-.2f \t %-2i\n",SELLS[i].user_name,SELLS[i].traded_price,SELLS[i].num_shares);
+    fprintf(freport,"%-8s \t %-.2f \t %-2i\n",sellTrades[i].user_name,sellTrades[i].traded_price,sellTrades[i].num_shares);
   }
 }
 
-bool alphcmp (struct executed_trade L, struct executed_trade R)
+bool alphcmp (const struct executed_trade* left_elem, const struct executed_trade* right_elem)
 {
-  if(L.stock_name[0] <= R.stock_name[0]){
+  if(left_elem->stock_name[0] <= right_elem->stock_name[0]){
     int i=0;
-    while(L.stock_name[i] == R.stock_name[i] && L.stock_name[i] != '\0' && R.stock_name[i] !='\0'){
+    while(left_elem->stock_name[i] == right_elem->stock_name[i] && left_elem->stock_name[i] != '\0' && right_elem->stock_name[i] !='\0'){
       i++;
     }
-    if(L.stock_name[i]== '\0' && R.stock_name[i]=='\0'){
+    if(left_elem->stock_name[i]== '\0' && right_elem->stock_name[i]=='\0'){
       int j=0;
-      while(L.user_name[j] == R.user_name[j] && L.user_name[j] != '\0' && R.user_name[j] !='\0'){
+      while(left_elem->user_name[j] == right_elem->user_name[j] && left_elem->user_name[j] != '\0' && right_elem->user_name[j] !='\0'){
 	j++;
       }
-      if(L.user_name[j] <= R.user_name[j]){
+      if(left_elem->user_name[j] <= right_elem->user_name[j]){
 	return true;
       }else{
 	return false;
       }
-    }else if(L.stock_name[i] < R.stock_name[i]){
+    }else if(left_elem->stock_name[i] < right_elem->stock_name[i]){
       return true;
     }else{
       return false;
@@ -112,7 +116,7 @@ void merge(struct executed_trade arr[], int l, int m, int r)
     k = l;
     while (i < n1 && j < n2)
     {
-      if (alphcmp(L[i],R[j]))
+      if (alphcmp(&L[i],&R[j]))
         {
             arr[k] = L[i];
             i++;

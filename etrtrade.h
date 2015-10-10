@@ -14,5 +14,10 @@ struct trade_request{
 };
 
 struct trade_request load_request(char str[]);
-void process_trade(struct executed_trade BUYS[], struct executed_trade SELLS[], struct trade_request t,double stock_price, int * buys, int * sells);
+void process_trade(struct executed_trade BUYS[],
+		   struct executed_trade SELLS[], 
+		   struct trade_request t,
+		   double stock_price,
+		   int * buys,
+		   int * sells);
 #endif
