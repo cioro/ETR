@@ -51,8 +51,8 @@ struct trade_request load_request(char str[])
 }
 
 
-void process_trade(struct executed_trade BUYS[],
-		   struct executed_trade SELLS[], 
+void process_trade(struct executed_trade buys[],
+		   struct executed_trade sells[], 
 		   struct trade_request t,
 		   double stock_price,
 		   int* buys, 
@@ -67,10 +67,10 @@ void process_trade(struct executed_trade BUYS[],
       if(t.user_price >= stock_price){
 	traded_price = (t.user_price+stock_price)/2;
 	//record transactio
-        strcpy(BUYS[Nbuys].user_name, t.user_name);
-        strcpy(BUYS[Nbuys].stock_name, t.stock_name);
-        BUYS[Nbuys].num_shares = t.num_shares;
-        BUYS[Nbuys].traded_price = traded_price; 
+        strcpy(buys[Nbuys].user_name, t.user_name);
+        strcpy(buys[Nbuys].stock_name, t.stock_name);
+        buys[Nbuys].num_shares = t.num_shares;
+        buys[Nbuys].traded_price = traded_price; 
         Nbuys++;
         printf("BUY EXECUTED. Traded price: %f \n",traded_price);
       }else{
@@ -81,10 +81,10 @@ void process_trade(struct executed_trade BUYS[],
       if(t.user_price <= stock_price){
 	traded_price = (t.user_price+stock_price)/2;
 	//record transaction
-        strcpy(SELLS[Nsells].user_name, t.user_name);
-        strcpy(SELLS[Nsells].stock_name, t.stock_name);
-        SELLS[Nsells].num_shares = t.num_shares;
-        SELLS[Nsells].traded_price = traded_price; 
+        strcpy(sells[Nsells].user_name, t.user_name);
+        strcpy(sells[Nsells].stock_name, t.stock_name);
+        sells[Nsells].num_shares = t.num_shares;
+        sells[Nsells].traded_price = traded_price; 
         Nsells++;
 	printf("SELL EXECUTED. Traded price: %f \n",traded_price);
       }else{
