@@ -67,23 +67,40 @@ void printReport(FILE * freport,
   }
 }
 
-bool alphcmp (const struct executed_trade* left_elem, const struct executed_trade* right_elem)
+//Alphabetic comparison between stock names.
+//If stock name's are identical the trader's names are compared.
+//Returns true is left_elem is closer to A than right-elem.
+//False otherwise.
+bool alphcmp (const struct executed_trade* left_elem, 
+	      const struct executed_trade* right_elem)
 {
+  //Compare two different stocks' names.
+  //First initial matches
   if(left_elem->stock_name[0] <= right_elem->stock_name[0]){
     int i=0;
-    while(left_elem->stock_name[i] == right_elem->stock_name[i] && left_elem->stock_name[i] != '\0' && right_elem->stock_name[i] !='\0'){
+    //Compare each letter in the name 
+    while(left_elem->stock_name[i] == right_elem->stock_name[i] &&
+	  left_elem->stock_name[i] != '\0' &&
+	  right_elem->stock_name[i] !='\0'){
       i++;
     }
-    if(left_elem->stock_name[i]== '\0' && right_elem->stock_name[i]=='\0'){
+    //If both names are identical compare the trader's names. 
+    if(left_elem->stock_name[i]== '\0' && 
+       right_elem->stock_name[i]=='\0'){
       int j=0;
-      while(left_elem->user_name[j] == right_elem->user_name[j] && left_elem->user_name[j] != '\0' && right_elem->user_name[j] !='\0'){
+      //Compare the trader's names.
+      while(left_elem->user_name[j] == right_elem->user_name[j] && 
+	    left_elem->user_name[j] != '\0' && 
+	    right_elem->user_name[j] !='\0'){
 	j++;
       }
+      //Evaluate trader's names order. 
       if(left_elem->user_name[j] <= right_elem->user_name[j]){
 	return true;
       }else{
 	return false;
       }
+      //Evaluate stock name order.
     }else if(left_elem->stock_name[i] < right_elem->stock_name[i]){
       return true;
     }else{
